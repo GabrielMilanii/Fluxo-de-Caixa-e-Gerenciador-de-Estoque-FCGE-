@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2024-03-24" view-index="0" gantt-divider-location="351" resource-divider-location="300" version="3.2.3247" locale="pt_BR">
+    <description/>
+    <view zooming-state="default:5" id="gantt-chart">
+        <field id="tpd3" name="Nome" width="200" order="0"/>
+        <field id="tpd4" name="Data inicial" width="75" order="1"/>
+        <field id="tpd5" name="Data final" width="75" order="2"/>
+        <option id="filter.completedTasks" value="false"/>
+        <option id="color.recent">
+            <![CDATA[#ffff33 #0000ff #ff9933 #33ff00 #ff3333]]>
+        </option>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Nome" width="210" order="0"/>
+        <field id="1" name="Função" width="86" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="26" name="Fase 1: Planejamento e Preparação" color="#ffff33" meeting="false" start="2024-04-12" duration="10" complete="0" thirdDate="2024-04-22" thirdDate-constraint="0" expand="true">
+            <task id="1" name="Pesquisa e seleção de tecnologia e ferramentas, análise de viabilidade e estimativa de custos." color="#ffff33" meeting="false" start="2024-04-12" duration="5" complete="0" thirdDate="2024-08-13" thirdDate-constraint="0" expand="true"/>
+            <task id="2" name="Elaboração de documento de escopo de projeto, definição de equipe de desenvolvimento, atribuição de responsabilidades e revisão e aprovação de plano de projeto." color="#ffff33" meeting="false" start="2024-04-19" duration="5" complete="0" thirdDate="2024-08-13" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="25" name="Fase 2: Desenvolvimento" color="#0000ff" meeting="false" start="2024-04-26" duration="40" complete="0" thirdDate="2024-04-29" thirdDate-constraint="0" expand="true">
+            <task id="3" name="Desenvolvimento do código de gerenciamento de estoque e desenvolvimento do código de fluxo de caixa." color="#0000ff" meeting="false" start="2024-04-26" duration="20" complete="0" thirdDate="2024-08-13" thirdDate-constraint="0" expand="true"/>
+            <task id="7" name="Integração dos códigos desenvolvidos, testes de integração e correção de bugs identificados." color="#0000ff" meeting="false" start="2024-05-24" duration="20" complete="0" thirdDate="2024-07-01" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="24" name="Fase 3: Teste e Revisão" color="#ff9933" meeting="false" start="2024-06-21" duration="10" complete="0" thirdDate="2024-06-17" thirdDate-constraint="0" expand="true">
+            <task id="11" name="Testes funcionais e de performance, revisão do código e otimizações necessárias." color="#ff9933" meeting="false" start="2024-06-21" duration="5" complete="0" thirdDate="2024-06-21" thirdDate-constraint="0" expand="true"/>
+            <task id="12" name="Preparação para o lançamento, documentação técnica e treinamento da equipe de suporte." color="#ff9933" meeting="false" start="2024-06-28" duration="5" complete="0" thirdDate="2024-06-28" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="23" name="Fase 4: Implementação e lançamento" color="#8cb6ce" meeting="false" start="2024-07-05" duration="5" complete="0" thirdDate="2024-07-08" thirdDate-constraint="0" expand="true">
+            <task id="13" name="Lançamento inicial do sistema, treinamento adicional e suporte pós-lançamento." color="#8cb6ce" meeting="false" start="2024-07-05" duration="5" complete="0" thirdDate="2024-08-13" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="22" name="Fase 5: Monitoramento e Ajustes" color="#33ff00" meeting="false" start="2024-07-12" duration="25" complete="0" thirdDate="2024-07-22" thirdDate-constraint="0" expand="true">
+            <task id="14" name="Monitoramento do sistema em produção, correção de problemas emergentes, coleta de feedback dos usuários e implementação de melhorias." color="#33ff00" meeting="false" start="2024-07-12" duration="25" complete="0" thirdDate="2024-08-13" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="20" name="Fase 6: Encerramento do Projeto" color="#ff3333" meeting="false" start="2024-08-16" duration="11" complete="0" thirdDate="2024-07-01" thirdDate-constraint="0" expand="true">
+            <task id="19" name="Documentação final do projeto e avaliação do projeto." color="#ff3333" meeting="false" start="2024-08-16" duration="5" complete="0" thirdDate="2024-08-13" thirdDate-constraint="0" expand="true"/>
+            <task id="0" name="Preparação de relatórios finais, encerramento oficial do projeto." color="#ff3333" meeting="false" start="2024-08-23" duration="6" complete="0" thirdDate="2024-08-23" thirdDate-constraint="0" expand="true"/>
+        </task>
+    </tasks>
+    <resources/>
+    <allocations/>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+</project>
