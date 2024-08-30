@@ -1,0 +1,310 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <locale.h>
+
+#define MAX_ITENS 1024
+#define MAX_TRANSACOES 1024
+
+//ESTRUTURA QUE REGISTRA OS ITENS
+
+typedef struct
+{
+    char nome[256];
+    float valor_Item;
+    float custoFabricacao;
+    int qtd_Item;
+
+} Item;
+
+//ESTRUTURA QUE REGISTRA TRANSAÇÕES FINANCEIRAS
+
+typedef struct
+{
+    float saldo;
+    float valor;
+    char descricao[100];
+    int mes;
+
+} transacao;
+
+//DEFINIÇÃO DE VARIÁVEIS GLOBAIS
+
+int contagem = 0;
+Item estoque[MAX_ITENS];
+transacao transacoes[MAX_TRANSACOES];
+float saldo_atual = 0;
+
+//FUNÇÃO PARA SALVAR DADOS
+
+void salvarDados (const char *nome_arquivo, Item estoque[], int contagem_estoque, transacao transacoes[], int contagem_transacao, float saldo_atual)
+{
+//DETERMINA ONDE É O ARQUIVO E EXIBE A MENSAGEM DE ERRO SE NÃO ENCONTRADO
+    
+    FILE *arquivo = fopen(nome_arquivo, "wb");
+    if (arquivo == NULL){
+        printf("Erro ao abrir o arquivo!\n");
+        return;
+    }
+    
+//CÓDIGO RESPONSÁVEL POR SALVAR OS DADOS NO ARQUIVO
+    
+    fwrite(&contagem_estoque, sizeof(int), 1, arquivo);
+    fwrite(estoque, sizeof(Item), contagem_estoque, arquivo);
+    
+    fwrite(&contagem_transacao, sizeof(int), 1, arquivo);
+    fwrite(transacoes, sizeof(transacao), contagem_transacao, arquivo);
+    
+    fwrite(&saldo_atual, sizeof(float), 1, arquivo);
+    
+    fclose(arquivo);
+}
+
+//FUNÇÃO PARA CARREGAR DADOS
+
+void carregarDados(const char *nome_arquivo, Item estoque[], int *contagem_estoque, transacao transacoes[], int *contagem_transacao, float *saldo_atual) {
+//DETERMINA ONDE É O ARQUIVO E EXIBE A MENSAGEM DE ERRO SE NÃO ENCONTRADO
+  
+    FILE *arquivo = fopen(nome_arquivo, "rb");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo!\n");
+        return;
+    }
+
+//CÓDIGO RESPONSÁVEL POR CARREGAR OS DADOS NO ARQUIVO
+    
+    fread(contagem_estoque, sizeof(int), 1, arquivo);
+    fread(estoque, sizeof(Item), *contagem_estoque, arquivo);
+
+    fread(contagem_transacao, sizeof(int), 1, arquivo);
+    fread(transacoes, sizeof(transacao), *contagem_transacao, arquivo);
+
+    fread(saldo_atual, sizeof(float), 1, arquivo);
+
+    fclose(arquivo);
+}
+
+
+//FUNÇÃO PARA ADICIONAR ITENS AO ESTOQUE
+
+void adicionarItem(Item estoque[],int *contagem)
+{
+//VERIFICA SE O ESTOQUE ESTÁ CHEIO
+
+    system("CLS");
+    if(*contagem > MAX_ITENS)
+    {
+        printf("Estoque cheio!\n");
+        return;
+    }
+
+//ADICIONA O ITEM REGISTRADO E SUAS ESPECIFICAÇÕES AO ESTOQUE
+
+    Item novoItem;
+    printf("Digite o nome do Item: ");
+    scanf(" %[^\n]", novoItem.nome);
+    printf("Digite o valor do Item: ");
+    scanf("%f", &novoItem.valor_Item);
+    printf("Digite seu custo de Fabricação: ");
+    scanf("%f", &novoItem.custoFabricacao);
+    printf("Digite a quantidade de itens que serão registrados: ");
+    scanf("%d", &novoItem.qtd_Item);
+
+    estoque[*contagem] = novoItem;
+    (*contagem) ++;
+    printf("\nSucesso ao adicionar item!\n");
+
+//SALVA OS DADOS
+    
+salvarDados(nome_arquivo, estoque, *contagem, transacoes, contagem_transacao, saldo_atual);
+
+}
+
+//FUNÇÃO PARA REMOVER ALGUM ITEM DO ESTOQUE
+
+void removerItem (Item estoque[],int *contagem)
+{
+//PERGUNTA O NOME DO ITEM QUE DESEJA REMOVER
+
+    system("CLS");
+    char nome[256];
+    printf("Digite o nome do item que deseja remover: ");
+    scanf(" %[^\n]", nome);
+
+//BUSCA NO ESTOQUE O ITEM E O REMOVE
+
+        for(int i=0;i < *contagem; i++){
+            if (strcmp(estoque[i].nome, nome) == 0){
+                for (int j = i; j < *contagem - 1; j++){
+                    estoque[j] = estoque[j + 1];
+                }
+                (*contagem) --;
+                printf("Item removido com sucesso!\n");
+
+            }
+
+        }
+
+//SALVA OS DADOS
+        
+salvarDados(nome_arquivo, estoque, *contagem, transacoes, contagem_transacao, saldo_atual);
+
+}
+
+
+//FUNÇÃO QUE LISTA OS ITENS REGISTRADOS
+
+void listarItem (Item estoque[], int contagem)
+{
+//EXIBE OS ITENS NO ESTOQUE
+
+    system("CLS");
+    printf("Itens no estoque: \n");
+    printf("Valor do Item  |  Custo de Fabricação   |  Quantidade de Itens  |  Nome do Produto \n");
+    for (int i = 0; i < contagem; i++)
+    {
+        printf("R$%-15.2f R$%-22.2f %-23d %s\n",
+                estoque[i].valor_Item, estoque[i].custoFabricacao, estoque[i].qtd_Item, estoque[i].nome);
+    }
+}
+
+//FUNÇÃO QUE REGISTRARÁ A ENTRADA E SAIDA DE DINHEIRO
+
+void entrada_saida (transacao transacoes[], int *contagem)
+{
+//ADICIONA A TRANSAÇÃO E SUAS ESPECIFICAÇÕES NO HISTÓRICO
+
+    system("CLS");
+    transacao novaTransacao;
+    printf("Digite o valor da transação: ");
+    scanf("%f", &novaTransacao.valor);
+    printf("Digite o mês da transação: ");
+    scanf("%d", &novaTransacao.mes);
+    printf("Digite a descrição da transação: ");
+    scanf(" %[^\n]", novaTransacao.descricao);
+
+//ATUALIZA O SALDO
+
+    novaTransacao.saldo = saldo_atual + novaTransacao.valor;
+
+    saldo_atual = novaTransacao.saldo;
+
+    transacoes[*contagem] = novaTransacao;
+    (*contagem) ++;
+
+//SALVA OS DADOS    
+
+    salvarDados(nome_arquivo, estoque, contagem_estoque, transacoes, *contagem, saldo_atual);
+    
+}
+
+//FUNÇÃO PARA EXIBIR O HISTÓRICO DE TRANSAÇÕES COM BASE NO MÊS
+
+void historicoTransacoes(transacao transacoes[], int contagem)
+{
+//PERGUNTA DE QUAL MÊS DESEJA VER O HISTÓRICO DE TRANSAÇÕES
+
+    system("CLS");
+    int mes;
+    printf("Digite de qual mês deseja ver o histórico de transação: ");
+    scanf("%d", &mes);
+
+//BUSCA NO HISTÓRICO AS TRANSAÇÕES DO MÊS INFORMADO E O EXIBE NA TELA COM SUAS ESPECIFICAÇÕES
+
+    printf("Histórico de transação: %d", mes);
+    printf("\nValor da transação | Descrição da transação\n");
+      for(int i=0;i < contagem;i++){
+            if(transacoes[i].mes == mes){
+
+                printf("R$%-18.2f %-10s\n"
+                       , transacoes[i].valor, transacoes[i].descricao);
+
+            }
+        }
+
+
+}
+
+//FUNÇÃO PARA VER O SALDO
+
+void verSaldo (transacao transacoes[], int contagem)
+{
+//EXIBE O SALDO ATUAL NA TELA
+
+    system ("CLS");
+    printf("Seu saldo atual: R$%.2f\n", saldo_atual);
+
+
+}
+
+int main()
+{
+    //DETERMINANDO A LINGUAGEM DO CODIGO COMO PORTUGUÊS
+
+    setlocale (LC_ALL, "Portuguese");
+
+    int opcao;
+    int contagem_estoque = 0;
+    int contagem_transacao = 0;
+
+//CARREGA OS DADOS ANTES DE TUDO
+    
+    carregarDados("dados.bin", estoque, &contagem_estoque, transacoes, &contagem_transacao, &saldo_atual);
+    
+
+//FAÇA OS TERMOS ABAIXO E EXIBE UM MENU
+
+    do
+    {
+        printf("MENU\n");
+        printf("1. Adicionar item\n");
+        printf("2. Remover item do estoque\n");
+        printf("3. Mostrar itens ao estoque\n");
+        printf("4. Adicionar movimentação financeira\n");
+        printf("5. Histórico de transações\n");
+        printf("6. Saldo atual\n");
+        printf("7. Sair\n");
+
+        printf("Escolha uma opção acima: ");
+        scanf("%d", &opcao);
+
+//LE A OPÇÃO E CHAMA A FUNÇÃO ESCOLHIDA
+
+        switch(opcao)
+        {
+        case 1:
+            adicionarItem (estoque, &contagem_estoque);
+            break;
+        case 2:
+            removerItem(estoque, &contagem_estoque);
+            break;
+        case 3:
+            listarItem (estoque, contagem_estoque);
+            break;
+        case 4:
+            entrada_saida(transacoes, &contagem_transacao);
+            break;
+        case 5:
+            historicoTransacoes(transacoes, contagem_transacao);
+            break;
+        case 6:
+            verSaldo(transacoes, contagem_transacao);
+            break;
+        case 7:
+            printf("Saindo!");
+            break;
+        default:
+            printf("Opção inválida... Tente novamente.\n");
+            break;
+        }
+
+//ENQUANTO O NUMERO DO MENU FOR DIFERENTE DE 7
+
+    }
+    while (opcao != 7);
+
+
+
+    return 0;
+}
+
